@@ -16,7 +16,7 @@ module OperationBuilder =
             tcs.SetException(ex)
             tcs.Task
         static member FromFailureEvents(events) =
-            Task.FromException(events |> failEx)
+            Task.FromException<'a>(events |> failEx)
 
     /// Represents the completion notification and continuation for an asynchronous operation
     [<Struct>]
@@ -225,7 +225,7 @@ module OperationBuilder =
                 let! result = asyncVal
                 match result with
                 | Success successfulResult -> return successfulResult.Result
-                | Failure errors -> return! errors |> Task.FromFailureEvents |> Async.AwaitTask
+                | Failure errors -> return! errors |> Task<'a>.FromFailureEvents |> Async.AwaitTask
             } |> Async.StartAsTask
         bindTaskNoContext task continuation
 
@@ -373,11 +373,12 @@ module OperationBuilder =
 
     /// Execute an OperationStep in a Task to ensure it runs asynchronously and creates an InProcess peration
     let rec runAsTask (firstStep : unit -> OperationStep<'result,'event>) =
-        InProcess <| Task.Run(fun () -> run firstStep).ContinueWith(fun (task: Task<Operation<'result,'event>>) ->
+        let task: InProcessOperation<'result,'event> =
+          Task.Run(fun () -> run firstStep).ContinueWith(fun (task: Task<Operation<'result,'event>>) ->
             if task.IsFaulted
-            then Task<'result*'event list>.FromException(task.Exception)
+            then Task.FromException<'result*'event list>(task.Exception)
             elif task.IsCanceled
-            then Task.FromException <| OperationCanceledException()
+            then Task.FromException<'result*'event list> <| OperationCanceledException()
             else let rec toTask operation =            
                      match operation with
                      | Completed result -> 
@@ -389,6 +390,7 @@ module OperationBuilder =
                      | Deferred deferred -> toTask deferred.Value
                  toTask task.Result
             ).Unwrap()
+        InProcess task
 
     /// CompletedStep Operations from other Opreations
     let rec returnOp (op: Operation<'result,'event>) =

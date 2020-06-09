@@ -9,10 +9,11 @@
     <OutputType>Library</OutputType>
     <RootNamespace>CurryOn.Akka.Persistence.EventStore</RootNamespace>
     <AssemblyName>CurryOn.Akka.Persistence.EventStore</AssemblyName>
-    <TargetFrameworkVersion>v4.6</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
     <TargetFSharpCoreVersion>4.4.1.0</TargetFSharpCoreVersion>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
     <Name>CurryOn.Akka.Persistence.EventStore</Name>
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -58,8 +59,8 @@
     <Compile Include="ReadJournal.fs" />
     <None Include="ReadMe.md" />
     <None Include="Script.fsx" />
-    <Content Include="packages.config" />
     <None Include="CurryOn.Akka.Persistence.EventStore.nuspec" />
+    <Content Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="Akka">
@@ -88,6 +89,7 @@
     </Reference>
     <Reference Include="FSharp.Core">
       <HintPath>..\packages\FSharp.Core.4.2.3\lib\net45\FSharp.Core.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="FSharp.Quotations.Evaluator">
       <HintPath>..\packages\FSharp.Quotations.Evaluator.1.1.2\lib\net45\FSharp.Quotations.Evaluator.dll</HintPath>
@@ -116,7 +118,6 @@
     </Reference>
     <Reference Include="Microsoft.VisualStudio.Validation">
       <HintPath>..\packages\Microsoft.VisualStudio.Validation.15.3.15\lib\net45\Microsoft.VisualStudio.Validation.dll</HintPath>
-      <Private>True</Private>
     </Reference>
     <Reference Include="mscorlib" />
     <Reference Include="Newtonsoft.Json">
@@ -134,12 +135,9 @@
     <Reference Include="System.Numerics" />
     <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.ValueTuple">
-      <HintPath>..\packages\System.ValueTuple.4.5.0\lib\netstandard1.0\System.ValueTuple.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="System.Xml" />
-  </ItemGroup>
-  <ItemGroup>
     <ProjectReference Include="..\CurryOn.Akka.Persistence.Common\CurryOn.Akka.Persistence.Common.fsproj">
       <Name>CurryOn.Akka.Persistence.Common</Name>
       <Project>{b502bb9d-6954-476a-b7bd-8900d78a73fe}</Project>
